@@ -5,7 +5,7 @@ import { searchPlugin } from '@vuepress/plugin-search'
 export default defineUserConfig({
   lang: 'en-US',
   title: '5150',
-  description: 'An opinionated guide to solution architecting',
+  description: 'An opinionated guide to technical consulting',
   base: '/',
   head: [],
   theme: defaultTheme({
@@ -14,6 +14,7 @@ export default defineUserConfig({
     docsDir: 'docs',
     navbar: [
       { text: 'Home', link: '/' },
+      { text: 'Guide', link: '/guides/' },
     ]
   }),
   plugins: [

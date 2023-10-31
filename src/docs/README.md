@@ -3,7 +3,7 @@ home: true,
 title: Home,
 actions:
   - text: Get Started
-    link: /guide/
+    link: /guides/
     type: primary
 footer: Copyright © 2023 Derek Sudduth
 ---
