@@ -38,8 +38,16 @@ jobs:
           pnpm install
           pnpm vuepress build docs
         working-directory: ./src
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-session-name: deployment-session
+          aws-region: us-east-1
 
       - name: Deploy
         run: |
           npm install
+          cdk bootstrap
         working-directory: ./deployment
