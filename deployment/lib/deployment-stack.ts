@@ -13,8 +13,7 @@ export class DeploymentStack extends cdk.Stack {
     super(scope, id, props);
 
     const distPath = 'src/docs/.vuepress/dist'
-    const accountId = cdk.Aws.ACCOUNT_ID
-    const certificate = Certificate.fromCertificateArn(this, 'FiftyOneFiftyCertificate', `arn:aws:acm:us-east-1:${accountId}:certificate/e2c31c19-7d2e-4009-882e-0fc10730238d`)
+    const certificate = Certificate.fromCertificateArn(this, 'FiftyOneFiftyCertificate', `arn:aws:acm:us-east-1:${this.account}:certificate/e2c31c19-7d2e-4009-882e-0fc10730238d`)
     const hostedZoneName = 'fiftyonefifty.dev'
 
     const bucket = new Bucket(this, 'FiftyOneFiftyBucket', {
