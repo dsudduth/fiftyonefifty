@@ -11,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
     permissions:
       id-token: write
       contents: read
@@ -20,15 +23,16 @@ jobs:
         with:
           fetch-depth: 2
           
-      - name: Configure Node
+      - name: Configure PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
-
-      - name: Install PNPM
-        run: npm install -g pnpm
-        working-directory: ./src
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
       
       - name: Build Docs
         run: |
