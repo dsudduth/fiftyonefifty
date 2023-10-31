@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Bucket, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
-import { OriginAccessIdentity, Distribution } from 'aws-cdk-lib/aws-cloudfront';
+import { OriginAccessIdentity, Distribution, ViewerProtocolPolicy } from 'aws-cdk-lib/aws-cloudfront';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { ARecord, RecordTarget, HostedZone, AaaaRecord } from 'aws-cdk-lib/aws-route53';
@@ -32,17 +32,31 @@ export class DeploymentStack extends cdk.Stack {
     })
     bucket.grantRead(oai)
 
+    // Ensure that cloudfront distribution updates after bucket deployment
     const distribution = new Distribution(this, 'FiftyOneFiftyDistribution', {
       defaultBehavior: {
         origin: new S3Origin(bucket, {
           originAccessIdentity: oai
         }),
+        viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
-      enabled: true,
-      defaultRootObject: 'index.html',
+      certificate,
       domainNames: [hostedZoneName],
-      certificate: certificate,
-      enableIpv6: true,
+      defaultRootObject: 'index.html',
+      errorResponses: [
+        {
+          httpStatus: 404,
+          responseHttpStatus: 200,
+          responsePagePath: '/404.html',
+          ttl: cdk.Duration.seconds(0)
+        },
+        {
+          httpStatus: 403,
+          responseHttpStatus: 200,
+          responsePagePath: '/404.html',
+          ttl: cdk.Duration.seconds(0)
+        }
+      ]
     })
 
     const hostedZone = HostedZone.fromLookup(this, 'FiftyOneFiftyHostedZone', {
