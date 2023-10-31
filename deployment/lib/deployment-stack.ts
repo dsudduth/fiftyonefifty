@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { Bucket, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { OriginAccessIdentity, Distribution } from 'aws-cdk-lib/aws-cloudfront';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
@@ -17,12 +17,7 @@ export class DeploymentStack extends cdk.Stack {
     const hostedZoneName = 'fiftyonefifty.dev'
 
     const bucket = new Bucket(this, 'FiftyOneFiftyBucket', {
-      blockPublicAccess: {
-        blockPublicAcls: true,
-        blockPublicPolicy: true,
-        ignorePublicAcls: true,
-        restrictPublicBuckets: true
-      },
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       autoDeleteObjects: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     })
@@ -53,7 +48,8 @@ export class DeploymentStack extends cdk.Stack {
       zone: HostedZone.fromLookup(this, 'FiftyOneFiftyHostedZone', {
         domainName: hostedZoneName
       }),
-      target: RecordTarget.fromAlias(new CloudFrontTarget(distribution))
+      target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
+      recordName: hostedZoneName
     })
   }
 }
