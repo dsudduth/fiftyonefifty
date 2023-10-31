@@ -38,3 +38,8 @@ jobs:
           pnpm install
           pnpm vuepress build docs
         working-directory: ./src
+
+      - name: Deploy
+        run: |
+          npm install
+        working-directory: ./deployment
