@@ -5,7 +5,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { OriginAccessIdentity, Distribution } from 'aws-cdk-lib/aws-cloudfront';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
-import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
+import { ARecord, RecordTarget, HostedZone } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 
 export class DeploymentStack extends cdk.Stack {
@@ -53,8 +53,7 @@ export class DeploymentStack extends cdk.Stack {
       zone: HostedZone.fromLookup(this, 'FiftyOneFiftyHostedZone', {
         domainName: hostedZoneName
       }),
-      recordName: hostedZoneName,
-      target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
+      target: RecordTarget.fromAlias(new CloudFrontTarget(distribution))
     })
   }
 }
