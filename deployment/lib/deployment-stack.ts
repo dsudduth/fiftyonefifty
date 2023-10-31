@@ -5,7 +5,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { OriginAccessIdentity, Distribution } from 'aws-cdk-lib/aws-cloudfront';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
-import { ARecord, RecordTarget, HostedZone, AaaaRecord, HostedZone } from 'aws-cdk-lib/aws-route53';
+import { ARecord, RecordTarget, HostedZone, AaaaRecord } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 
 export class DeploymentStack extends cdk.Stack {
