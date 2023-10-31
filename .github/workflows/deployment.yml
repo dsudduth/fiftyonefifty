@@ -49,5 +49,5 @@ jobs:
       - name: Deploy
         run: |
           npm install
-          cdk deploy --require-approval never
+          cdk deploy --all --require-approval never
         working-directory: ./deployment
