@@ -28,14 +28,15 @@ jobs:
         with:
           version: 8
       
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   working-directory: ./src
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      #     cache: 'pnpm'
       
-      - name: Build Docs
-        run: |
-          pnpm install
-          pnpm vuepress build docs
-        working-directory: ./src
+      # - name: Build Docs
+      #   run: |
+      #     pnpm install
+      #     pnpm vuepress build docs
+      #   working-directory: ./src
